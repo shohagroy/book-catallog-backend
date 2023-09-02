@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import httpStatus from "http-status";
+import mainRoute from "./app/routes";
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.get("/", (req: Request, res: Response) => {
     message: "book catallog backend server is running...",
   });
 });
+
+app.use("/api/v1", mainRoute);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
