@@ -17,11 +17,36 @@ const createNewUser = async (payload: IUser) => {
 
   const token = await jwtHelpers.createToken(newUser);
 
-  newUser.password = null;
+  newUser.password = "";
 
   return { user: newUser, token };
 };
 
+const userSignin = async (payload: Partial<IUser>) => {
+  const { email, password } = payload;
+  const isUserExists = await userService.findByEmail(email!);
+
+  if (!isUserExists) {
+    throw new ApiError(httpStatus.FORBIDDEN, "user does not exists");
+  }
+
+  const isPasswordMatched = await hashedPassword.comparePassword(
+    password!,
+    isUserExists.password
+  );
+
+  if (!isPasswordMatched) {
+    throw new ApiError(httpStatus.FORBIDDEN, "password does not match");
+  }
+
+  const token = await jwtHelpers.createToken(isUserExists);
+
+  isUserExists.password = "";
+
+  return { user: isUserExists, token };
+};
+
 export const authService = {
   createNewUser,
+  userSignin,
 };
