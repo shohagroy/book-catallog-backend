@@ -1,7 +1,7 @@
+import { User } from "@prisma/client";
 import prisma from "../../../shared/prisma";
-import { IUser } from "./user.interface";
 
-const getAllUserToDb = async (): Promise<Partial<IUser>[]> => {
+const getAllUserToDb = async (): Promise<Partial<User>[]> => {
   const result = await prisma.user.findMany({
     select: {
       id: true,
@@ -19,9 +19,7 @@ const getAllUserToDb = async (): Promise<Partial<IUser>[]> => {
   return result;
 };
 
-const getSingleUserToDb = async (
-  id: string
-): Promise<Partial<IUser | null>> => {
+const getSingleUserToDb = async (id: string): Promise<Partial<User | null>> => {
   const result = await prisma.user.findFirst({
     where: {
       id,
@@ -44,8 +42,8 @@ const getSingleUserToDb = async (
 
 const updateUserDataToDb = async (
   id: string,
-  payload: Partial<IUser>
-): Promise<Partial<IUser | null>> => {
+  payload: Partial<User>
+): Promise<Partial<User | null>> => {
   const result = await prisma.user.update({
     where: {
       id,
@@ -67,7 +65,7 @@ const updateUserDataToDb = async (
   return result;
 };
 
-const deleteUserToDb = async (id: string): Promise<Partial<IUser | null>> => {
+const deleteUserToDb = async (id: string): Promise<Partial<User | null>> => {
   const result = await prisma.user.delete({
     where: {
       id,
@@ -90,7 +88,7 @@ const deleteUserToDb = async (id: string): Promise<Partial<IUser | null>> => {
   return result;
 };
 
-const findByEmail = async (email: string): Promise<IUser | null> => {
+const findByEmail = async (email: string): Promise<User | null> => {
   const user = await prisma.user.findFirst({
     where: {
       email,
@@ -100,7 +98,7 @@ const findByEmail = async (email: string): Promise<IUser | null> => {
   return user;
 };
 
-const insertUserToDB = async (data: IUser): Promise<IUser> => {
+const insertUserToDB = async (data: User): Promise<User> => {
   const result = await prisma.user.create({
     data,
   });

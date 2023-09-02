@@ -3,12 +3,12 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { categoryService } from "./category.service";
-import { ICategory } from "./category.interface";
+import { Category } from "@prisma/client";
 
 const createNewCategory = catchAsync(async (req: Request, res: Response) => {
   const data = req.body;
   const result = await categoryService.insertCategoryToDb(data);
-  sendResponse<ICategory>(res, {
+  sendResponse<Category>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "category create successfully",
@@ -18,7 +18,7 @@ const createNewCategory = catchAsync(async (req: Request, res: Response) => {
 
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
   const result = await categoryService.getCategories();
-  sendResponse<ICategory[]>(res, {
+  sendResponse<Category[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "categories fetched successfully",
@@ -30,7 +30,7 @@ const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const result = await categoryService.getSingleCategory(id);
-  sendResponse<ICategory>(res, {
+  sendResponse<Category>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "category fetched successfully",
@@ -43,7 +43,7 @@ const updateCategoryData = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
   const result = await categoryService.updateCategoryData(id, payload);
-  sendResponse<ICategory>(res, {
+  sendResponse<Category>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "category updated successfully",
@@ -55,7 +55,7 @@ const deleteCategory = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const result = await categoryService.deleteCategory(id);
-  sendResponse<ICategory>(res, {
+  sendResponse<Category>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "category deleted successfully",

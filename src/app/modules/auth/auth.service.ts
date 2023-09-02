@@ -2,10 +2,10 @@ import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import { hashedPassword } from "../../utils/hashedPassword";
 import { jwtHelpers } from "../../utils/jwtHelpers";
-import { IUser } from "../user/user.interface";
 import { userService } from "../user/user.service";
+import { User } from "@prisma/client";
 
-const createNewUser = async (payload: IUser) => {
+const createNewUser = async (payload: User) => {
   const isUserExists = await userService.findByEmail(payload.email);
 
   if (isUserExists) {
@@ -22,7 +22,7 @@ const createNewUser = async (payload: IUser) => {
   return { user: newUser, token };
 };
 
-const userSignin = async (payload: Partial<IUser>) => {
+const userSignin = async (payload: Partial<User>) => {
   const { email, password } = payload;
   const isUserExists = await userService.findByEmail(email!);
 
