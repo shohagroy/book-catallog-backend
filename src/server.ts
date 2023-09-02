@@ -1,24 +1,34 @@
 import app from "./app";
-
 import env from "./config";
 
-const uri: string | undefined =
-  process.env.NODE_ENV !== "production"
-    ? "mongodb://127.0.0.1:27017/digital_cow_hut_with_auth"
-    : env.db_uri;
+async function bootstrap() {
+  const server = app.listen(env.port, () => {
+    console.log(`Server running on port ${env.port}`);
+  });
 
-async function dbConnection() {
-  try {
-    if (!env.db_uri) {
-      app.listen(env.port, () => {
-        console.log("server listening on port " + env.port);
+  const exitHandler = () => {
+    if (server) {
+      server.close(() => {
+        console.log("Server closed");
       });
-    } else {
-      console.log("db uri is not defined");
     }
-  } catch (err) {
-    console.log(`Failed to connect database ${err}`);
-  }
+    process.exit(1);
+  };
+
+  const unexpectedErrorHandler = (error: unknown) => {
+    console.error(error);
+    exitHandler();
+  };
+
+  process.on("uncaughtException", unexpectedErrorHandler);
+  process.on("unhandledRejection", unexpectedErrorHandler);
+
+  process.on("SIGTERM", () => {
+    console.log("SIGTERM received");
+    if (server) {
+      server.close();
+    }
+  });
 }
 
-dbConnection();
+bootstrap();

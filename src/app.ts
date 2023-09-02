@@ -1,5 +1,6 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
+import httpStatus from "http-status";
 
 const app = express();
 
@@ -14,13 +15,27 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("book catallog backend server is running...");
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: "book catallog backend server is running...",
+  });
 });
 
-app.all("*", (req: Request, res: Response) => {
-  res.status(500).send("No Route Found");
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: "Not Found",
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: "API Not Found",
+      },
+    ],
+  });
+  next();
 });
 
 export default app;
