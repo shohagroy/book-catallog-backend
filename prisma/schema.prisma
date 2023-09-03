@@ -26,6 +26,7 @@ model User {
   profileImg String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  reviews    Review[]
 
   @@map("users")
 }
@@ -53,6 +54,7 @@ model Book {
   categoryId   String
   category     Category      @relation(fields: [categoryId], references: [id])
   orderedBooks OrderedBook[]
+  reviews      Review[]
 
   @@map("books")
 }
@@ -85,4 +87,18 @@ model OrderedBook {
   book  Book  @relation(fields: [bookId], references: [id])
 
   @@map("ordered_books")
+}
+
+model Review {
+  id     String @id @default(uuid())
+  review String
+  rating Int
+
+  userId String
+  bookId String
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("reviews")
 }
