@@ -8,7 +8,10 @@ import { ordersRoutes } from "../modules/order/order.route";
 const router = express.Router();
 
 const moduleRoutes = [
-  // ... routes
+  {
+    path: "/",
+    route: authRoutes,
+  },
   {
     path: "/auth",
     route: authRoutes,

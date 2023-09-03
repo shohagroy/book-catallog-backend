@@ -46,7 +46,14 @@ const userSignin = async (payload: Partial<User>) => {
   return { user: isUserExists, token };
 };
 
+const getProfile = async (id: string) => {
+  const result = await userService.getSingleUserToDb(id);
+
+  return result;
+};
+
 export const authService = {
   createNewUser,
   userSignin,
+  getProfile,
 };
