@@ -15,13 +15,9 @@ const insertBookToDb = async (data: Book): Promise<Book> => {
   }
 
   const result = await prisma.book.create({
-    data: {
-      title: data.title,
-      author: data.author,
-      genre: data.genre,
-      price: data.price,
-      publicationDate: data.publicationDate,
-      categoryId: data.categoryId,
+    data,
+    include: {
+      category: true,
     },
   });
 
@@ -31,7 +27,7 @@ const insertBookToDb = async (data: Book): Promise<Book> => {
 const getAllBooks = async (): Promise<Book[]> => {
   const result = await prisma.book.findMany({
     include: {
-      categories: true,
+      category: true,
     },
   });
 
@@ -44,7 +40,7 @@ const getSingleBook = async (id: string): Promise<Book | null> => {
       id,
     },
     include: {
-      categories: true,
+      category: true,
     },
   });
 
@@ -61,7 +57,7 @@ const updateBookData = async (
     },
     data: payload,
     include: {
-      categories: true,
+      category: true,
     },
   });
 
@@ -72,6 +68,9 @@ const deleteBook = async (id: string): Promise<Book | null> => {
   const result = await prisma.book.delete({
     where: {
       id,
+    },
+    include: {
+      category: true,
     },
   });
 
