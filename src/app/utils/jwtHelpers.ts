@@ -7,7 +7,7 @@ const createToken = (user: Partial<IUser>): string => {
 
   const payload = { id, name, email, role };
 
-  return jwt.sign(payload, config.secrect_token_key, {
+  return jwt.sign(payload, config.secrect_token_key as Secret, {
     expiresIn: config.expires_in,
   });
 };

@@ -50,8 +50,33 @@ model Book {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  category     Category      @relation(fields: [categoryId], references: [id])
+  orderedBooks OrderedBook[]
 
   @@map("books")
+}
+
+model Order {
+  id           String        @id @default(uuid())
+  userId       String
+  orderedBooks OrderedBook[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("orders")
+}
+
+model OrderedBook {
+  id        String   @id @default(uuid())
+  orderId   String
+  bookId    String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+  book  Book  @relation(fields: [bookId], references: [id])
+
+  @@map("ordered_books")
 }
