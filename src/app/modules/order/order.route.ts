@@ -9,4 +9,18 @@ router
   .route("/create-order")
   .post(auth(ENUM_USER_ROLE.CUSTOMER), orderController.createOrder);
 
+router
+  .route("/")
+  .get(
+    auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.ADMIN),
+    orderController.getAllOrders
+  );
+
+router
+  .route("/:orderId")
+  .get(
+    auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.ADMIN),
+    orderController.getSingleOrder
+  );
+
 export const ordersRoutes = router;

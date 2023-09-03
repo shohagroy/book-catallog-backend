@@ -1,7 +1,8 @@
 import prisma from "../../../shared/prisma";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
-import { OrderedBook } from "@prisma/client";
+import { Order, OrderedBook, User } from "@prisma/client";
+import { ENUM_USER_ROLE } from "../user/user.constants";
 
 const createNewOrder = async (
   userId: string,
@@ -50,6 +51,62 @@ const createNewOrder = async (
   return result;
 };
 
+const getAllOrders = async (): Promise<Order[]> => {
+  const result = await prisma.order.findMany({
+    include: {
+      orderedBooks: true,
+    },
+  });
+
+  return result;
+};
+
+const getUserOrders = async (userId: string): Promise<Order[]> => {
+  const result = await prisma.order.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      orderedBooks: true,
+    },
+  });
+
+  return result;
+};
+
+const getSingleOrder = async (
+  id: string,
+  user: Partial<User>
+): Promise<Order | null> => {
+  let result: Order | null = null;
+
+  if (user.role === ENUM_USER_ROLE.ADMIN) {
+    result = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        orderedBooks: true,
+      },
+    });
+  } else {
+    result = await prisma.order.findUnique({
+      where: {
+        id,
+        userId: user.id!,
+      },
+      include: {
+        orderedBooks: true,
+      },
+    });
+  }
+
+  return result;
+};
+
 export const orderService = {
   createNewOrder,
+  getAllOrders,
+  getUserOrders,
+  getSingleOrder,
 };
