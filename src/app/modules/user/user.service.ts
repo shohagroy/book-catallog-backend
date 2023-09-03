@@ -83,8 +83,6 @@ const deleteUserToDb = async (id: string): Promise<Partial<User | null>> => {
     },
   });
 
-  console.log(result);
-
   return result;
 };
 

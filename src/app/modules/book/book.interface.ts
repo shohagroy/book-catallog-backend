@@ -12,3 +12,10 @@ export type IBook = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export type IBookFilters = {
+  search?: string;
+  category?: string;
+  minPrice?: string;
+  maxPrice?: string;
+};
