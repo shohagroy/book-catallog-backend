@@ -20,7 +20,6 @@ const auth =
         config.secrect_token_key as Secret
       );
 
-      console.log(verifiedUser);
       req.user = verifiedUser;
 
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
