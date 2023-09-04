@@ -49,9 +49,8 @@ const deleteReview = catchAsync(async (req: Request, res: Response) => {
 
 const updateReview = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const user: Partial<User> = req.user as Partial<User>;
 
-  const result = await reviewService.updateReview(id, user, req.body);
+  const result = await reviewService.updateReview(id, req.body);
 
   sendResponse<Review>(res, {
     statusCode: httpStatus.OK,

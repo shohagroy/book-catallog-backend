@@ -17,7 +17,7 @@ router
 router
   .route("/:id")
   .get(auth(ENUM_USER_ROLE.ADMIN), reviewController.getSingleReviews)
-  .patch(auth(ENUM_USER_ROLE.CUSTOMER), reviewController.updateReview)
+  .patch(auth(ENUM_USER_ROLE.ADMIN), reviewController.updateReview)
   .delete(auth(ENUM_USER_ROLE.ADMIN), reviewController.deleteReview);
 
 export const reivewsRoutes = router;

@@ -84,6 +84,7 @@ const getAllBooks = async (
   const result = await prisma.book.findMany({
     include: {
       category: true,
+      reviews: true,
     },
     where: whereConditions,
     skip,
@@ -117,6 +118,7 @@ const getSingleBook = async (id: string): Promise<Book | null> => {
     },
     include: {
       category: true,
+      reviews: true,
     },
   });
 
@@ -130,6 +132,7 @@ const getBooksByCategory = async (categoryId: string): Promise<Book[]> => {
     },
     include: {
       category: true,
+      reviews: true,
     },
   });
 
@@ -147,6 +150,7 @@ const updateBookData = async (
     data: payload,
     include: {
       category: true,
+      reviews: true,
     },
   });
 
@@ -160,6 +164,7 @@ const deleteBook = async (id: string): Promise<Book | null> => {
     },
     include: {
       category: true,
+      reviews: true,
     },
   });
 

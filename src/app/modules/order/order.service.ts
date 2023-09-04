@@ -1,7 +1,7 @@
 import prisma from "../../../shared/prisma";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
-import { Order, OrderedBook, User } from "@prisma/client";
+import { Order, OrderedBook, Status, User } from "@prisma/client";
 import { ENUM_USER_ROLE } from "../user/user.constants";
 
 const createNewOrder = async (
@@ -104,9 +104,59 @@ const getSingleOrder = async (
   return result;
 };
 
+const updateOrderInfo = async (
+  id: string,
+  data: Partial<Order>
+): Promise<Order | null> => {
+  let result: Order | null = null;
+
+  const order = await prisma.order.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (order?.status === Status.pending && data.status === Status.shipped) {
+    result = await prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status: Status.shipped,
+      },
+      include: {
+        orderedBooks: true,
+      },
+    });
+  } else if (
+    order?.status === Status.shipped &&
+    data.status === Status.delivered
+  ) {
+    result = await prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status: Status.delivered,
+      },
+      include: {
+        orderedBooks: true,
+      },
+    });
+  } else {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Invalid! order status must be pending => shipped => delivered"
+    );
+  }
+
+  return result;
+};
+
 export const orderService = {
   createNewOrder,
   getAllOrders,
   getUserOrders,
   getSingleOrder,
+  updateOrderInfo,
 };

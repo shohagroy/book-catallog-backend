@@ -64,13 +64,11 @@ const deleteReview = async (id: string): Promise<Review> => {
 
 const updateReview = async (
   id: string,
-  user: Partial<User>,
   data: Partial<Review>
 ): Promise<Review> => {
   const result = await prisma.review.update({
     where: {
       id,
-      userId: user.id,
     },
     data,
     include: {

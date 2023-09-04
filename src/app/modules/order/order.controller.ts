@@ -53,8 +53,22 @@ const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateOrderInfo = catchAsync(async (req: Request, res: Response) => {
+  const { orderId } = req.params;
+
+  const result = await orderService.updateOrderInfo(orderId, req.body);
+
+  sendResponse<Order>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "order status updated successfully",
+    data: result,
+  });
+});
+
 export const orderController = {
   createOrder,
   getAllOrders,
   getSingleOrder,
+  updateOrderInfo,
 };

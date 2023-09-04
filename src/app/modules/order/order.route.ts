@@ -21,6 +21,7 @@ router
   .get(
     auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.ADMIN),
     orderController.getSingleOrder
-  );
+  )
+  .patch(auth(ENUM_USER_ROLE.ADMIN), orderController.updateOrderInfo);
 
 export const ordersRoutes = router;
