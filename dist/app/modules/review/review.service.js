@@ -62,11 +62,10 @@ const deleteReview = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
-const updateReview = (id, user, data) => __awaiter(void 0, void 0, void 0, function* () {
+const updateReview = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.review.update({
         where: {
             id,
-            userId: user.id,
         },
         data,
         include: {

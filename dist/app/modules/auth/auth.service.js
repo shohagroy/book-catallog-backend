@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -25,9 +36,8 @@ const createNewUser = (payload) => __awaiter(void 0, void 0, void 0, function* (
     }
     payload.password = yield hashedPassword_1.hashedPassword.createhas(payload.password);
     const newUser = yield user_service_1.userService.insertUserToDB(payload);
-    const token = yield jwtHelpers_1.jwtHelpers.createToken(newUser);
-    newUser.password = "";
-    return { user: newUser, token };
+    const { password } = newUser, otherInfo = __rest(newUser, ["password"]);
+    return otherInfo;
 });
 const userSignin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
@@ -40,8 +50,7 @@ const userSignin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, "password does not match");
     }
     const token = yield jwtHelpers_1.jwtHelpers.createToken(isUserExists);
-    isUserExists.password = "";
-    return { user: isUserExists, token };
+    return token;
 });
 const getProfile = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.userService.getSingleUserToDb(id);

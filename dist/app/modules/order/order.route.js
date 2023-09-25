@@ -17,5 +17,6 @@ router
     .get((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.CUSTOMER, user_constants_1.ENUM_USER_ROLE.ADMIN), order_controller_1.orderController.getAllOrders);
 router
     .route("/:orderId")
-    .get((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.CUSTOMER, user_constants_1.ENUM_USER_ROLE.ADMIN), order_controller_1.orderController.getSingleOrder);
+    .get((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.CUSTOMER, user_constants_1.ENUM_USER_ROLE.ADMIN), order_controller_1.orderController.getSingleOrder)
+    .patch((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.ADMIN), order_controller_1.orderController.updateOrderInfo);
 exports.ordersRoutes = router;

@@ -55,8 +55,19 @@ const getSingleOrder = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         data: result,
     });
 }));
+const updateOrderInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { orderId } = req.params;
+    const result = yield order_service_1.orderService.updateOrderInfo(orderId, req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "order status updated successfully",
+        data: result,
+    });
+}));
 exports.orderController = {
     createOrder,
     getAllOrders,
     getSingleOrder,
+    updateOrderInfo,
 };

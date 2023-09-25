@@ -32,7 +32,7 @@ const userSignin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         statusCode: http_status_1.default.OK,
         success: true,
         message: "user signin successufully",
-        data: result,
+        token: result,
     });
 }));
 const getProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

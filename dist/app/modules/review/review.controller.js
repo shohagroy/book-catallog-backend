@@ -57,8 +57,7 @@ const deleteReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const updateReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const user = req.user;
-    const result = yield review_service_1.reviewService.updateReview(id, user, req.body);
+    const result = yield review_service_1.reviewService.updateReview(id, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

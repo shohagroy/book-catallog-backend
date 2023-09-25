@@ -31,20 +31,13 @@ const insertCategoryToDb = (data) => __awaiter(void 0, void 0, void 0, function*
     return result;
 });
 const getCategories = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.default.category.findMany({
-        include: {
-            books: true,
-        },
-    });
+    const result = yield prisma_1.default.category.findMany();
     return result;
 });
 const getSingleCategory = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.category.findFirst({
         where: {
             id,
-        },
-        include: {
-            books: true,
         },
     });
     return result;

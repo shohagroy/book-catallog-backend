@@ -20,6 +20,6 @@ router
 router
     .route("/:id")
     .get((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.ADMIN), review_controller_1.reviewController.getSingleReviews)
-    .patch((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.CUSTOMER), review_controller_1.reviewController.updateReview)
+    .patch((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.ADMIN), review_controller_1.reviewController.updateReview)
     .delete((0, auth_1.default)(user_constants_1.ENUM_USER_ROLE.ADMIN), review_controller_1.reviewController.deleteReview);
 exports.reivewsRoutes = router;

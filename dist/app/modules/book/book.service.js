@@ -93,6 +93,7 @@ const getAllBooks = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
     const result = yield prisma_1.default.book.findMany({
         include: {
             category: true,
+            reviews: true,
         },
         where: whereConditions,
         skip,
@@ -122,6 +123,7 @@ const getSingleBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
         },
         include: {
             category: true,
+            reviews: true,
         },
     });
     return result;
@@ -133,6 +135,7 @@ const getBooksByCategory = (categoryId) => __awaiter(void 0, void 0, void 0, fun
         },
         include: {
             category: true,
+            reviews: true,
         },
     });
     return result;
@@ -145,6 +148,7 @@ const updateBookData = (id, payload) => __awaiter(void 0, void 0, void 0, functi
         data: payload,
         include: {
             category: true,
+            reviews: true,
         },
     });
     return result;
@@ -156,6 +160,7 @@ const deleteBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
         },
         include: {
             category: true,
+            reviews: true,
         },
     });
     return result;
