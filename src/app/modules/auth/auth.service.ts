@@ -15,11 +15,9 @@ const createNewUser = async (payload: User) => {
   payload.password = await hashedPassword.createhas(payload.password!);
   const newUser = await userService.insertUserToDB(payload);
 
-  const token = await jwtHelpers.createToken(newUser);
+  const { password, ...otherInfo } = newUser;
 
-  newUser.password = "";
-
-  return { user: newUser, token };
+  return otherInfo;
 };
 
 const userSignin = async (payload: Partial<User>) => {
@@ -41,9 +39,7 @@ const userSignin = async (payload: Partial<User>) => {
 
   const token = await jwtHelpers.createToken(isUserExists);
 
-  isUserExists.password = "";
-
-  return { user: isUserExists, token };
+  return token;
 };
 
 const getProfile = async (id: string) => {

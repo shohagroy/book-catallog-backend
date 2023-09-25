@@ -21,7 +21,7 @@ const userSignin = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "user signin successufully",
-    data: result,
+    token: result,
   });
 });
 

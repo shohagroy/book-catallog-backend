@@ -22,11 +22,7 @@ const insertCategoryToDb = async (data: Category): Promise<Category> => {
 };
 
 const getCategories = async (): Promise<Category[]> => {
-  const result = await prisma.category.findMany({
-    include: {
-      books: true,
-    },
-  });
+  const result = await prisma.category.findMany();
 
   return result;
 };
@@ -35,9 +31,6 @@ const getSingleCategory = async (id: string): Promise<Category | null> => {
   const result = await prisma.category.findFirst({
     where: {
       id,
-    },
-    include: {
-      books: true,
     },
   });
 

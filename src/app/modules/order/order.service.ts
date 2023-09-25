@@ -9,44 +9,51 @@ const createNewOrder = async (
   orderedBooksData: OrderedBook[]
 ) => {
   const result = await prisma.$transaction(async (transactionClient) => {
-    const order = await transactionClient.order.create({
-      data: {
-        userId,
-      },
-    });
+    try {
+      const order = await transactionClient.order.create({
+        data: {
+          userId,
+        },
+      });
 
-    await Promise.all(
-      orderedBooksData.map(async (bookData) => {
-        const existingBook = await transactionClient.book.findUnique({
-          where: { id: bookData.bookId },
-        });
+      await Promise.all(
+        orderedBooksData.map(async (bookData) => {
+          const existingBook = await transactionClient.book.findUnique({
+            where: { id: bookData.bookId },
+          });
 
-        if (!existingBook) {
-          throw new ApiError(
-            httpStatus.BAD_REQUEST,
-            `Book with ID ${bookData.bookId} not found.`
-          );
-        }
+          if (!existingBook) {
+            throw new ApiError(
+              httpStatus.BAD_REQUEST,
+              `Book with ID ${bookData.bookId} not found.`
+            );
+          }
 
-        return transactionClient.orderedBook.create({
-          data: {
-            orderId: order.id,
-            bookId: bookData.bookId,
-            quantity: bookData.quantity,
-          },
-        });
-      })
-    );
+          return transactionClient.orderedBook.create({
+            data: {
+              orderId: order.id,
+              bookId: bookData.bookId,
+              quantity: bookData.quantity,
+            },
+          });
+        })
+      );
 
-    const newOrderData = await transactionClient.order.findUnique({
-      where: { id: order.id },
-      include: {
-        orderedBooks: true,
-      },
-    });
+      return await transactionClient.order.findUnique({
+        where: { id: order.id },
+        include: {
+          orderedBooks: true,
+        },
+      });
 
-    return newOrderData;
+      // console.log(newOrderData);
+      // return newOrderData;
+    } catch (error) {
+      console.log(error);
+    }
   });
+
+  console.log("result", result);
 
   return result;
 };
